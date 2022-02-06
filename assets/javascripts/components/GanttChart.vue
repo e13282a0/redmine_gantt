@@ -1,9 +1,6 @@
 <template>
     <div>
-        ertert
       <slot />
-
-      asdasd
     </div>
 </template>
 
@@ -19,6 +16,4 @@ module.exports = {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

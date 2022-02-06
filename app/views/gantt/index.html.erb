@@ -6,11 +6,11 @@
 	<v-app>
 		<v-main>
 			<gantt-chart>
-			
-				<gantt-row key="1" title="test 1"/> 
-				<gantt-row key="2" title="test 2"/> 
-				<gantt-row key="3" title="test 3"/> 
-		
+				<div> this is visible </div>
+				<gantt-row key="1" title="test 1"></gantt-row>
+				<div> nothing of this and beyond is shown</div>
+				<gantt-row key="2" title="test 2"/> </gantt-row>
+				<gantt-row key="3" title="test 3"/> </gantt-row>
 			</gantt-chart>
 		</v-main>
 	</v-app>
@@ -20,15 +20,16 @@
 <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900", "https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css","https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" %>
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/@vue/composition-api@1.0.5","https://cdn.jsdelivr.net/npm/vue-echarts@6.0.0"%>
 <script type="text/javascript">
+
 	Vue.component("v-chart", VueECharts);
+	Vue.component("gantt-chart", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttChart.vue'));
+	Vue.component("gantt-row", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttRow.vue'));
 	var app = new Vue({
 		el: '#app',
 		components: {
-			'gantt-chart':httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttChart.vue'),
-			'gantt-row':httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttRow.vue'),
-			//'treemap-chart':httpVueLoader('/plugin_assets/redmine_insights/javascripts/components/treemap-chart.vue'),
-			//'tree-chart':httpVueLoader('/plugin_assets/redmine_insights/javascripts/components/tree-chart.vue'),
-			//'sunburst-chart':httpVueLoader('/plugin_assets/redmine_insights/javascripts/components/sunburst-chart.vue')
+			//'gantt-chart':httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttChart.vue'),
+			//'gantt-row':httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttRow.vue'),
+
 			},
 		data: {
 			//userSeries: JSON.parse('<%= escape_javascript(@user_series) %>'),
