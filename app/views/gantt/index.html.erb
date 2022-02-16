@@ -6,24 +6,24 @@
 	<v-app>
 		<v-main>
 			<gantt-chart>
-				<div> this is visible </div>
-				<gantt-row key="1" title="test 1"></gantt-row>
-				<div> nothing of this and beyond is shown</div>
+				<gantt-row key="1" title="test 1">
+					<gantt-bar> </gantt-bar>
+					<gantt-bar> </gantt-bar>
+				</gantt-row>
 				<gantt-row key="2" title="test 2"/> </gantt-row>
-				<gantt-row key="3" title="test 3"/> </gantt-row>
-			</gantt-chart>
-		</v-main>
-	</v-app>
+			<gantt-row key="3" title="test 3"/> </gantt-row>
+	</gantt-chart>
+</v-main>
+</v-app>
 </div>
 <!-- install vue, vuetify and vue-echart -->
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js","https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js","https://cdn.jsdelivr.net/npm/http-vue-loader@1.4.2/src/httpVueLoader.min.js"%>
 <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900", "https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css","https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" %>
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/@vue/composition-api@1.0.5","https://cdn.jsdelivr.net/npm/vue-echarts@6.0.0"%>
 <script type="text/javascript">
-
-	Vue.component("v-chart", VueECharts);
 	Vue.component("gantt-chart", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttChart.vue'));
 	Vue.component("gantt-row", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttRow.vue'));
+	Vue.component("gantt-bar", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttBar.vue'));
 	var app = new Vue({
 		el: '#app',
 		components: {

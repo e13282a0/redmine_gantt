@@ -1,6 +1,6 @@
 <template>
-    <div>
-      {{ title }}
+    <div class="gantt-row">
+      <slot />
     </div>
 </template>
 
@@ -9,11 +9,17 @@ module.exports = {
   props: ["title"],
   name:"GanttRow",
   data() {
-    return {};
+    return {
+      leftWidth: this.$parent.leftWidth
+    };
   },
   computed: {},
   methods: {},
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.gantt-row {
+  height:20px;
+}
+</style>
