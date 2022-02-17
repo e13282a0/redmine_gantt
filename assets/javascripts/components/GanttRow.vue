@@ -1,8 +1,8 @@
 <template>
-  <div class="gantt-row">
-    <div class="left" :style="cssVars">{{ name }}</div>
-    <div class="right" ref="right" :style="cssVars">
-      <div v-for="i in colCount" :key="'col' + i" class="col">{{ i }}</div>
+  <div :style="cssVars" class="gantt-row">
+    <div class="left">{{ name }}</div>
+    <div class="right" ref="right">
+      <div v-for="i in colCount" :key="'col' + i" class="col"></div>
     </div>
   </div>
 </template>
@@ -14,14 +14,16 @@ module.exports = {
   data() {
     return {
       leftWidth: this.$parent.leftWidth,
-      colCount:this.$parent.colCount,
+      colCount: this.$parent.colCount,
+      rowHeight: 20
     };
   },
   computed: {
     cssVars() {
       return {
-        "--leftWidth": this.leftWidth+"px",
+        "--leftWidth": this.leftWidth + "px",
         "--colCount": this.colCount,
+        "--rowHeight": this.rowHeight+"px",
       };
     },
   },
@@ -32,25 +34,29 @@ module.exports = {
 <style scoped>
 .gantt-row {
   display: block;
-  height:20px;
+  height: var(--rowHeight);
   overflow: hidden;
 }
 .left {
   float: left;
   width: var(--leftWidth);
+  height: var(--rowHeight);
 }
 .right {
   width: calc(100% - var(--leftWidth));
   float: left;
+  height: var(--rowHeight);
 }
 
 .col {
   float: left;
-  width: calc(100% / var(--colCount));
+  width: calc((100% / var(--colCount)) - 1px); /* subtract border width*/
   font-size: x-small;
-  padding:0;
+  padding: 0;
+  border-right: 1px solid #ccc;
+  height: var(--rowHeight);
 }
 .col:hover {
-  background-color: blue;
+  background-color: #EEE;
 }
 </style>
