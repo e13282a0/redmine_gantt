@@ -1,6 +1,6 @@
 <template>
-  <div>
-      hallo
+  <div class="bar">
+      gallo
   </div>
 </template>
 
