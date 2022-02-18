@@ -1,8 +1,10 @@
 <template>
-  <div class="main" ref="main">
-    <div class="headline">
-      <div :style="{ width: leftWidth + 'px' }">headline</div>
-      <div>timeline</div>
+  <div :style="cssVars" class="main" ref="main">
+    <div class="headline-row">
+      <div class="left">headline</div>
+      <div class="right">
+          <div class="col" v-for="elm in timeBeam" :key="'date'+elm.startDate">{{elm.startDate.format('dd DD.')}}</div>
+      </div>
     </div>
     <div class="lines">
       <slot />
@@ -17,18 +19,93 @@ module.exports = {
   data() {
     return {
       leftWidth: 200,
-      colCount:90,
+      colCount:88,
+      days:28,
+      weeks:48,
+      months:12,
     };
   },
   computed: {
-      cols:function(){
-        return Math.floor((this.mainWidth-this.leftWidth)/this.gridColumnWidth)
-      }
+      cssVars() {
+      return {
+        "--leftWidth": this.leftWidth + "px",
+        "--colCount": this.colCount,
+        "--rowHeight": this.rowHeight+"px",
+      };
+    },
+      timeBeam: function() {
+        let result = [];
+        const today = moment()
+        const startDate=today.startOf('isoWeek'); // add one day if startday is sunay
+        // days
+        for (let i = 0; i < this.days; i++) {
+            result.push({
+                type: 'day',
+                startDate: moment(startDate).add(i, 'days').startOf('day'),
+                endDate: moment(startDate).add(i, 'days').endOf('day'),
+                holidays: 0,
+                majorSeparator: false
+            });
+        }
+
+        // weeks
+        for (let i = 0; i < this.weeks; i++) {
+            result.push({
+                type: 'week',
+                startDate: moment(startDate).add(this.days + (i * 7), 'days').startOf('day'),
+                endDate: moment(startDate).add(this.days + (i * 7) + 7, 'days').endOf('day'),
+                holidays: 0,
+                majorSeparator: i === 0
+            });
+        }
+
+        // broken month
+        let latestDate = moment(startDate).add(this.days + (this.weeks * 7), 'days');
+        result.push({
+            type: 'month',
+            startDate: latestDate,
+            endDate: moment(latestDate).endOf('month').endOf('day'),
+            holidays: 0,
+            majorSeparator: true
+        });
+        let startRegMonth = moment(latestDate).endOf('month').add(1, 'day');
+
+        // months
+        for (let i = 0; i < this.months; i++) {
+            let _startDate = moment(startRegMonth).add(i, 'month').startOf('month');
+            let _endDate = moment(startRegMonth).add(i, 'month').endOf('month').endOf('day');
+            result.push({
+                type: 'month',
+                startDate: _startDate,
+                endDate: _endDate,
+                holidays: 0,
+                majorSeparator: (i === 0) // separator for broken month
+            });
+        }
+        //debugger;
+        // set separators
+        for (let index = 0; index < result.length; index++) {
+            let elm = result[index];
+            let prevElm = result[index - 1];
+
+            switch (elm.type) {
+                case 'day':
+                    elm.minorSeparator = (index > 0) && (elm.startDate.isoWeekday() === 1);
+                    break;
+                case 'week':
+                    elm.minorSeparator = (prevElm.type !== 'day') && (elm.startDate.month() !== prevElm.startDate.month());
+                    break;
+                case 'month':
+                    elm.minorSeparator = (prevElm.type !== 'week') && (elm.startDate.year() !== prevElm.startDate.year());
+                    break;
+            }
+        }
+        //this.endDate = result[result.length - 1].endDate;
+        //debugger;
+        return result;
+    }
   },
   methods: {},
-  mounted(){
-      this.mainWidth=this.$refs.main.clientWidth;
-  }
 };
 </script>
 
@@ -36,16 +113,31 @@ module.exports = {
 .main {
   width: 100%;
 }
-.headline {
-  width: 100%;
+.headline-row {
+  display: block;
+  height: var(--rowHeight);
+  overflow: hidden;
+}
+.left {
+  float: left;
+  width: var(--leftWidth);
+  height: var(--rowHeight);
+}
+.right {
+  width: calc(100% - var(--leftWidth));
+  float: left;
+  height: var(--rowHeight);
 }
 
-.headline > div {
-  /*white-space: nowrap;*/
-  display: inline-block;
+.col {
+  float: left;
+  width: calc((100% / var(--colCount)) - 1px); /* subtract border width*/
+  font-size: x-small;
+  padding: 0;
+  border-right: 1px solid #ccc;
+  height: var(--rowHeight);
 }
-
-.lines {
-  width: 100%;
+.col:hover {
+  background-color: #EEE;
 }
 </style>
