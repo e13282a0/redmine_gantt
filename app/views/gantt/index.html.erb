@@ -7,8 +7,8 @@
 		<v-main>
 			<gantt-chart>
 				<gantt-row key="1" name="ruc">
-					<gantt-bar> </gantt-bar>
-					<gantt-bar> </gantt-bar>
+					<gantt-bar start="2022-04-01" end="2022-05-02"> </gantt-bar>
+					<gantt-bar start="2022-08-01" end="2022-12-02"> </gantt-bar>
 				</gantt-row>
 				<gantt-row key="2" name="kre"/> </gantt-row>
 			<gantt-row key="3" name="sei"/> </gantt-row>
@@ -20,6 +20,7 @@
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js","https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js","https://cdn.jsdelivr.net/npm/http-vue-loader@1.4.2/src/httpVueLoader.min.js"%>
 <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900", "https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css","https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" %>
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/@vue/composition-api@1.0.5","https://cdn.jsdelivr.net/npm/vue-echarts@6.0.0"%>
+<%= javascript_include_tag "https://unpkg.com/vuex@2.0.0", "https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"%>
 <script type="text/javascript">
 	Vue.component("gantt-chart", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttChart.vue'));
 	Vue.component("gantt-row", httpVueLoader('/plugin_assets/redmine_gantt/javascripts/components/GanttRow.vue'));

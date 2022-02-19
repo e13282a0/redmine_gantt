@@ -3,7 +3,9 @@
     <div class="left">{{ name }}</div>
     <div class="right" ref="right">
       <div v-for="i in colCount" :key="'col' + i" class="col"></div>
+      <slot />
     </div>
+    
   </div>
 </template>
 
@@ -15,6 +17,7 @@ module.exports = {
     return {
       leftWidth: this.$parent.leftWidth,
       colCount: this.$parent.colCount,
+      timeBeam: this.$parent.timeBeam,
       rowHeight: 20
     };
   },
