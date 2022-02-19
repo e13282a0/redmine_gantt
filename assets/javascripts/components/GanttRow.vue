@@ -58,7 +58,7 @@ module.exports = {
   width: var(--colWidth); 
   font-size: x-small;
   padding: 0;
-  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   height: var(--rowHeight);
   z-index: 1;
 }

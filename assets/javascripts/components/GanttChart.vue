@@ -1,24 +1,52 @@
 <template>
   <div :style="cssVars" class="main" ref="main">
-
-    <div class="headline">
-      <div class="left">headline</div>
+    <!-- year -->
+<div class="headline">
+      <div class="left"></div>
       <div class="right">
-        <div class="col" v-for="elm in timeBeam" :key="'date' + elm.startDate">
-          {{ elm.startDate.format("dd") }}
+        <div :class="[elm.newYear ? 'colBorderLeft':'col']" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          <template v-if="elm.newYear">{{ elm.startDate.format("YYYY") }}</template>
+        </div>
+      </div>
+    </div>
+      <!-- month -->
+  <div class="headline">
+      <div class="left"></div>
+      <div class="right">
+        <div :class="[elm.newMonth ? 'colBorderLeft':'col']" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          <template v-if="elm.newMonth">{{ elm.startDate.format("MMM") }}</template>
+        </div>
+      </div>
+    </div>
+      <!-- week -->
+    <div class="headline">
+      <div class="left"></div>
+      <div class="right">
+        <div :class="[elm.newWeek ? 'colBorderLeft':'col']" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          <template v-if="elm.newWeek && (elm.type=='day' || elm.type=='week')">{{ elm.startDate.format("ww") }}</template>
+        </div>
+      </div>
+    </div>
+
+    <!-- day -->
+    <div class="headline">
+      <div class="left"></div>
+      <div class="right">
+        <div class="colBorderLeft" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          <template v-if="elm.type=='day' || elm.type=='week'">{{ elm.startDate.format("DD.") }}</template>
         </div>
       </div>
     </div>
 
     <div class="headline">
-      <div class="left">headline</div>
+      <div class="left"></div>
       <div class="right">
-        <div class="col" v-for="elm in timeBeam" :key="'date' + elm.startDate">
-          {{ elm.startDate.format("DD.") }}
+        <div class="colBorderLeft" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          <template v-if="elm.type=='day'">{{ elm.startDate.format("dd") }}</template>
+
         </div>
       </div>
     </div>
-
 
     <div class="rows">
       <slot />
@@ -117,6 +145,10 @@ module.exports = {
         let elm = result[index];
         let prevElm = result[index - 1];
 
+        elm.newWeek = index === 0 || elm.startDate.week() != prevElm.startDate.week();
+        elm.newMonth = index === 0 || elm.startDate.month() != prevElm.startDate.month();
+        elm.newYear = index === 0 || elm.startDate.year() != prevElm.startDate.year();
+
         switch (elm.type) {
           case "day":
             elm.minorSeparator = index > 0 && elm.startDate.isoWeekday() === 1;
@@ -165,13 +197,24 @@ module.exports = {
   float: left;
   width: var(--colWidth); /* subtract border width*/
   font-size: x-small;
-  padding: 0;
-  border-right: 1px solid #ccc;
+  padding: 0 0 0 1px;
   height: var(--rowHeight);
   vertical-align: top;
   line-height: 14px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
-.col:hover {
-  background-color: #eee;
+
+.colBorderLeft {
+  float: left;
+  width: var(--colWidth); /* subtract border width*/
+  font-size: x-small;
+  padding: 0;
+  height: var(--rowHeight);
+  vertical-align: top;
+  line-height: 14px;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 </style>
