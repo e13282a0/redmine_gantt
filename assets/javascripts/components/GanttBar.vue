@@ -32,9 +32,9 @@ module.exports = {
       return {
         "--startIndex": this.startIndex,
         "--endIndex": this.endIndex,
-        "--left":this.startIndex*this.colWidth+"px",
-        "--width":(this.endIndex-this.startIndex)*this.colWidth+"px",
-        "--height":this.rowHeight-2+"px",
+        "--left":this.startIndex*(this.colWidth+2)+"px",
+        "--width":((this.endIndex-this.startIndex)*(this.colWidth+2))+"px",   // add 2 border pixel
+        "--height":this.rowHeight-3+"px",
       };
     },
   },
@@ -45,16 +45,19 @@ module.exports = {
 <style scoped>
 .bar {
   z-index: 9;
-  background-color: blue;
+  background-color: rgb(128, 128, 247);
   border: 1px solid #d3d3d3;
   text-align: center;
   cursor: move;
+  top: 2px;
   left:var(--left);
-  height:10px;
+  height:var(--height);
   width:var(--width);
   min-width: var(--colWidth);
-  max-width: 600px;
+  line-height: var(--height);
+  font-size: xx-small;
 }
+
 
 /*Drgable */
 
@@ -62,7 +65,7 @@ module.exports = {
   position: absolute;
   /*resize: both; !*enable this to css resize*! */
   overflow: auto;
-}
+  }
 
 /*Resizeable*/
 

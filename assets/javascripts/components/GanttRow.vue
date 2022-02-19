@@ -2,7 +2,9 @@
   <div :style="cssVars" class="gantt-row">
     <div class="left">{{ name }}</div>
     <div class="right" ref="right">
-      <div v-for="i in colCount" :key="'col' + i" class="col"></div>
+      <div v-for="elm in timeBeam" :key="'col' + elm.startDate" class="col" :class="[elm.majorSeparator ? 'fatBorderLeft' :'borderLeft']">
+
+      </div>
       <slot />
     </div>
     
@@ -26,7 +28,7 @@ module.exports = {
     cssVars() {
       return {
         "--leftWidth": this.leftWidth + "px",
-        "--colWidth": this.colWidth + "px",
+        "--colWidth": this.colWidth +2+ "px", // add 2 border pixel
         "--rowHeight": this.rowHeight+"px",
       };
     },
@@ -53,16 +55,28 @@ module.exports = {
   position: relative;
 }
 
-.col {
-  float: left;
-  width: var(--colWidth); 
-  font-size: x-small;
-  padding: 0;
-  border-left: 1px solid #ccc;
-  height: var(--rowHeight);
-  z-index: 1;
-}
 .col:hover {
   background-color: #EEE;
+}
+
+ .col {
+  float: left;
+  width: var(--colWidth); /* subtract border width*/
+  font-size: x-small;
+  height: var(--rowHeight);
+  vertical-align: top;
+  line-height: 14px;
+  padding:0 0 0 2px;
+  border-top: 1px solid #ccc;
+}
+
+.borderLeft {
+  padding: 0 0 0 1px;
+  border-left: 1px solid #ccc;
+}
+
+.fatBorderLeft {
+  padding: 0;
+  border-left: 2px solid #aaa;
 }
 </style>
