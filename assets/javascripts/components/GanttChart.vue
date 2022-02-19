@@ -1,14 +1,26 @@
 <template>
   <div :style="cssVars" class="main" ref="main">
-    <div class="headline-row">
+
+    <div class="headline">
       <div class="left">headline</div>
       <div class="right">
         <div class="col" v-for="elm in timeBeam" :key="'date' + elm.startDate">
-          {{ elm.startDate.format("dd DD.") }}
+          {{ elm.startDate.format("dd") }}
         </div>
       </div>
     </div>
-    <div class="lines">
+
+    <div class="headline">
+      <div class="left">headline</div>
+      <div class="right">
+        <div class="col" v-for="elm in timeBeam" :key="'date' + elm.startDate">
+          {{ elm.startDate.format("DD.") }}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="rows">
       <slot />
     </div>
   </div>
@@ -21,7 +33,9 @@ module.exports = {
   data() {
     return {
       leftWidth: 200,
-      colCount: 88,
+      colCount: 90,
+      colWidth:20,
+      rowHeight:20,
       timeBeam: this.getTimeBeam(),
     };
   },
@@ -29,7 +43,7 @@ module.exports = {
     cssVars() {
       return {
         "--leftWidth": this.leftWidth + "px",
-        "--colCount": this.colCount,
+        "--colWidth": this.colWidth + "px",
         "--rowHeight": this.rowHeight + "px",
       };
     },
@@ -38,7 +52,7 @@ module.exports = {
     getTimeBeam: function () {
       let days=28;
       let weeks=48;
-      let months=12;
+      let months=90-days-weeks-1; //subtract 1 for the broken month
       let result = [];
       const today = moment();
       const startDate = today.startOf("isoWeek"); // add one day if startday is sunay
@@ -131,9 +145,9 @@ module.exports = {
 .main {
   width: 100%;
 }
-.headline-row {
+.headline {
   display: block;
-  height: var(--rowHeight);
+  height: 14px;
   overflow: hidden;
 }
 .left {
@@ -144,16 +158,18 @@ module.exports = {
 .right {
   width: calc(100% - var(--leftWidth));
   float: left;
-  height: var(--rowHeight);
+  height: 14px;
 }
 
 .col {
   float: left;
-  width: calc((100% / var(--colCount)) - 1px); /* subtract border width*/
+  width: var(--colWidth); /* subtract border width*/
   font-size: x-small;
   padding: 0;
   border-right: 1px solid #ccc;
   height: var(--rowHeight);
+  vertical-align: top;
+  line-height: 14px;
 }
 .col:hover {
   background-color: #eee;

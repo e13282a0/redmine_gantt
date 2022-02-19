@@ -17,15 +17,16 @@ module.exports = {
     return {
       leftWidth: this.$parent.leftWidth,
       colCount: this.$parent.colCount,
+      colWidth: this.$parent.colWidth,
       timeBeam: this.$parent.timeBeam,
-      rowHeight: 20
+      rowHeight: this.$parent.rowHeight,
     };
   },
   computed: {
     cssVars() {
       return {
         "--leftWidth": this.leftWidth + "px",
-        "--colCount": this.colCount,
+        "--colWidth": this.colWidth + "px",
         "--rowHeight": this.rowHeight+"px",
       };
     },
@@ -49,15 +50,17 @@ module.exports = {
   width: calc(100% - var(--leftWidth));
   float: left;
   height: var(--rowHeight);
+  position: relative;
 }
 
 .col {
   float: left;
-  width: calc((100% / var(--colCount)) - 1px); /* subtract border width*/
+  width: var(--colWidth); 
   font-size: x-small;
   padding: 0;
   border-right: 1px solid #ccc;
   height: var(--rowHeight);
+  z-index: 1;
 }
 .col:hover {
   background-color: #EEE;

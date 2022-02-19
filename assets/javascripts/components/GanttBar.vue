@@ -10,6 +10,8 @@ module.exports = {
   data() {
     return {
       timeBeam: this.$parent.timeBeam,
+      colWidth: this.$parent.colWidth,
+      rowHeight: this.$parent.rowHeight,
     };
   },
   computed: {
@@ -17,21 +19,22 @@ module.exports = {
       let _this = this;
       return this.timeBeam.findIndex(function(elm){
         //console.log(moment(_this.start)+"|"+elm.startDate+"|"+elm.endDate)+"|"+moment(_this.start) >= elm.startDate+"|"+moment(_this.start) <= elm.endDate
-        return moment(_this.start) >= elm.startDate && moment(_this.start) <= elm.endDate
+        return elm.startDate  >= moment(_this.start).startOf('day'); 
       })
     },
     endIndex:function(){
       let _this = this;
       return this.timeBeam.findIndex(function(elm){
-        return moment(_this.end) >= elm.startDate && moment(_this.end) <= elm.endDate
+        return elm.startDate >= moment(_this.end).endOf('day');
       })
     },
     cssVars() {
       return {
         "--startIndex": this.startIndex,
         "--endIndex": this.endIndex,
-        "--left":this.startIndex*24+"px",
-        "--width":(this.endIndex-this.startIndex)*24+"px",
+        "--left":this.startIndex*this.colWidth+"px",
+        "--width":(this.endIndex-this.startIndex)*this.colWidth+"px",
+        "--height":this.rowHeight-2+"px",
       };
     },
   },
@@ -49,7 +52,7 @@ module.exports = {
   left:var(--left);
   height:10px;
   width:var(--width);
-  min-width: 300px;
+  min-width: var(--colWidth);
   max-width: 600px;
 }
 
