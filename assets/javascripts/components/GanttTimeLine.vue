@@ -4,7 +4,9 @@
       v-for="milestone in milestones"
       :style="getCssVars(milestone.date)"
       class="gem"
-      :key="milestone.title">
+      :key="milestone.title"
+      draggable
+      @dragstart="startDrag($event, milestone)">
       <span class="sign">•</span> {{milestone.title}}
     </div>
       <div class="signBar" :style="barCssVars" />
@@ -13,7 +15,10 @@
 
 <script>
 module.exports = {
-  props: ["milestones"], // [{date, status, title},{date,status,title}]
+  //drag drop example
+  //https://learnvue.co/2020/01/how-to-add-drag-and-drop-to-your-vuejs-project/#adding-drag-and-drop-functionality
+
+  props: ["milestones"], // [{id, date, status, title},{id, date,status,title}]
   data() {
     return {
       timeBeam: this.$parent.timeBeam,
@@ -31,9 +36,7 @@ module.exports = {
         "--left":minIndex*(this.colWidth+2)+"px",
         "--width":((maxIndex-minIndex+1)*(this.colWidth+2))+"px",   // add 2 border pixel
       };
-
     }
-
   },
   methods: {
     getCssVars: function (date) {
@@ -49,7 +52,12 @@ module.exports = {
       return this.timeBeam.findIndex(function (elm) {
         return elm.startDate >= moment(date).startOf("day");
       });
-    }
+    },
+    startDrag (evt, item) {
+        evt.dataTransfer.dropEffect = 'move'
+        evt.dataTransfer.effectAllowed = 'move'
+        evt.dataTransfer.setData('itemID', item.id)
+  		},
   },
 };
 </script>

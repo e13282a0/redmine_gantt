@@ -2,7 +2,10 @@
   <div :style="cssVars" class="gantt-row">
     <div class="left">{{ name }}</div>
     <div class="right" ref="right">
-      <div v-for="elm in timeBeam" :key="'col' + elm.startDate" class="col" :class="[elm.majorSeparator ? 'fatBorderLeft' :'borderLeft']">
+      <div v-for="elm in timeBeam" :key="'col' + elm.startDate" class="col" :class="[elm.majorSeparator ? 'fatBorderLeft' :'borderLeft']"
+      @drop="onDrop($event, 1)"
+    @dragover.prevent
+    @dragenter.prevent>
 
       </div>
       <slot />
@@ -33,7 +36,13 @@ module.exports = {
       };
     },
   },
-  methods: {},
+  methods: {
+    onDrop (evt, list) {
+      const itemID = evt.dataTransfer.getData('itemID')
+      //const item = this.items.find(item => item.id == itemID)
+      //item.list = list
+    }
+  },
 };
 </script>
 

@@ -1,5 +1,6 @@
 <template>
-  <div :style="cssVars" class="bar">
+  <div :style="cssVars" class="bar" draggable
+      @dragstart="startDrag($event, start)">
       gallo
   </div>
 </template>
@@ -38,7 +39,13 @@ module.exports = {
       };
     },
   },
-  methods: {},
+  methods: {
+    startDrag (evt, item) {
+        evt.dataTransfer.dropEffect = 'move'
+        evt.dataTransfer.effectAllowed = 'move'
+        evt.dataTransfer.setData('itemID', item.id)
+  		},
+  },
 };
 </script>
 
